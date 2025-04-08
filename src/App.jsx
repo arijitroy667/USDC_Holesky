@@ -99,7 +99,8 @@ function FaucetWithAutoMint() {
         animate={{ y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <h2 className="text-3xl font-bold mb-6 text-center text-cyan-400">USDC Auto-Faucet</h2>
+        <h2 className="text-3xl font-bold mb-6 text-center text-cyan-400">USDC</h2>
+        <h2 className="text-3xl font-bold mb-6 text-center text-cyan-400">Auto-Faucet</h2>
 
         <div className="space-y-4 mb-6">
           <p><span className="text-gray-400">Faucet Balance:</span> <span className="font-semibold">{faucetBalance} USDC</span></p>
