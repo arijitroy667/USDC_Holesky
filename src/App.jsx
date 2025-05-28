@@ -273,7 +273,7 @@ export default function FaucetWithAutoMint() {
               className="text-3xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-[#2775CA] to-[#65a8ff]"
               variants={itemVariants}
             >
-              USDC Holesky Faucet
+              USDC Hoodi Faucet
             </motion.h2>
           </motion.div>
 
