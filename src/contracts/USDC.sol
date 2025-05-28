@@ -4,7 +4,7 @@ pragma solidity ^0.8.19;
 contract CustomERC20 {
     string public name;
     string public symbol;
-    uint8 public decimals = 18;
+    uint8 public decimals = 6;
     uint256 public totalSupply;
 
     mapping(address => uint256) public balanceOf;

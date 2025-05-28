@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 
 // Make sure this is the correct address of your deployed USDCAutoFaucet contract
-const FAUCET_ADDRESS = "0xdbeEEdE4320CbA5E03d75e28A840977Fd15460Df";
+const FAUCET_ADDRESS = "0x12CE5cA399e3FF934c17A48117aeeb80D22d601C";
 
 // Correctly match the ABI to your USDCAutoFaucet contract
 const FAUCET_ABI = [
