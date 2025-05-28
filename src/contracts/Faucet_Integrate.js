@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 
 // Make sure this is the correct address of your deployed USDCAutoFaucet contract
-const FAUCET_ADDRESS = "0x12CE5cA399e3FF934c17A48117aeeb80D22d601C";
+const FAUCET_ADDRESS = "0x2F10297555813b8706e9E0eF72fAfAb729516B65";
 
 // Correctly match the ABI to your USDCAutoFaucet contract
 const FAUCET_ABI = [
@@ -53,7 +53,7 @@ async function requestTokens(amount) {
   try {
     const contract = await getFaucetContract();
     console.log(`Requesting ${amount} USDC from faucet`);
-    const amountInWei = ethers.parseEther(amount.toString());
+    const amountInWei = ethers.parseUnits(amount.toString(),6);
     
     const tx = await contract.requestTokens(amountInWei);
     console.log("Transaction sent:", tx.hash);
@@ -76,7 +76,7 @@ async function getRemainingAllowance() {
     
     console.log("Getting allowance for:", userAddress);
     const remainingWei = await contract.getRemainingAllowance(userAddress);
-    const formatted = ethers.formatEther(remainingWei);
+    const formatted = ethers.formatUnits(remainingWei,6);
     console.log("Remaining allowance:", formatted);
     return formatted;
   } catch (error) {
@@ -91,17 +91,43 @@ async function getFaucetBalance() {
     console.log("Getting faucet balance...");
     const contract = await getFaucetContract();
     
+    // Get USDC token address from faucet
+    const tokenAddress = await contract.usdcToken();
+    console.log("USDC token address from faucet:", tokenAddress);
+    console.log("Expected USDC address:", "0x1904f0522FC7f10517175Bd0E546430f1CF0B9Fa");
+    
+    // Check if addresses match
+    if (tokenAddress.toLowerCase() !== "0x1904f0522FC7f10517175Bd0E546430f1CF0B9Fa".toLowerCase()) {
+      console.error("⚠️ CRITICAL: USDC addresses don't match! Faucet is using wrong token.");
+    }
+    
     console.log("Connected to contract at:", FAUCET_ADDRESS);
     const balanceWei = await contract.getFaucetBalance();
     
     console.log("Raw balance (BigInt):", balanceWei.toString());
-    const formattedBalance = ethers.formatEther(balanceWei);
+    const formattedBalance = ethers.formatUnits(balanceWei, 6);
     console.log("Formatted balance:", formattedBalance);
+    
+    // Direct balance check as verification
+    const provider = new ethers.BrowserProvider(window.ethereum);
+    const usdcContract = new ethers.Contract(
+      tokenAddress,
+      ["function balanceOf(address) view returns (uint256)", "function decimals() view returns (uint8)"],
+      provider
+    );
+    
+    // Check decimals to verify
+    const decimals = await usdcContract.decimals();
+    console.log("USDC token decimals:", decimals);
+    
+    // Direct balance check
+    const directBalance = await usdcContract.balanceOf(FAUCET_ADDRESS);
+    console.log("Direct balance check:", ethers.formatUnits(directBalance, decimals));
     
     return formattedBalance;
   } catch (error) {
     console.error("Failed to get faucet balance:", error);
-    console.error("Error details:", error);
+    console.error("Error details:", error.message); // Add message for clearer errors
     return "0"; // Return 0 on error for graceful degradation
   }
 }

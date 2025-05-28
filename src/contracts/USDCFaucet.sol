@@ -7,10 +7,10 @@ contract USDCAutoFaucet {
     CustomERC20 public usdcToken;
     address public owner;
 
-    uint256 public maxTokensPerDay = 100 ether; // 100 USDC (with 18 decimals)
+    uint256 public maxTokensPerDay = 2000 * 10 ** 6; // 100 USDC (with 6 decimals)
     uint256 public constant COOLDOWN_TIME = 1 days;
     uint256 public constant AUTO_MINT_INTERVAL = 10 days;
-    uint256 public constant AUTO_MINT_AMOUNT = 10000 ether; // 10,000 USDC
+    uint256 public constant AUTO_MINT_AMOUNT = 1000000 * 10 ** 6; // 10,000 USDC
 
     uint256 public lastAutoMintTime;
 

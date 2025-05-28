@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
 
-const address = 0x0135F40aA3b7E8d14ce830d3017B193B9a040bA9;
+const address = "0x1904f0522FC7f10517175Bd0E546430f1CF0B9Fa";
 
 const ERC20_ABI = [
     "function transfer(address _to, uint256 _value) external returns (bool)",
@@ -31,7 +31,7 @@ async function mint(account,amount){
 
     const contract = await getContract();
     console.log("Minting to account:", account, "amount:", amount);
-    const amountInWei = ethers.parseEther(amount.toString());
+    const amountInWei = ethers.parseUnits(amount.toString(),6);
     const tx = await contract.mint(account, amountInWei);
     await tx.wait();
     return tx;
@@ -41,7 +41,7 @@ async function burn(amount){
     if (!amount) throw new Error("Amount is required");
     
     const contract = await getContract();
-    const amountInWei = ethers.parseEther(amount.toString());
+    const amountInWei = ethers.parseUnits(amount.toString(),6);
     const tx = await contract.burn(amountInWei);
     await tx.wait();
     return tx;
@@ -61,7 +61,7 @@ async function transfer(from,to,amount){
         });
         
         // First approve the transfer
-        const amountInWei = ethers.parseEther(amount.toString());
+        const amountInWei = ethers.parseUnits(amount.toString(),6);
         const approveTx = await contract.approve(to, amountInWei);
         await approveTx.wait();
         
